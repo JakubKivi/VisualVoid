@@ -1,0 +1,6 @@
+{
+  "dialogs": [
+    { "speaker": "Janek", "dialog": "Cześć! Witaj w grze." },
+    { "speaker": "Anka", "dialog": "Uważaj na potwory!" }
+  ]
+}
