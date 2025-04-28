@@ -20,9 +20,12 @@ public class DialogManager : MonoBehaviour
         StartDialogue();
     }
 
+    
+
     private void LoadDialoguesFromJson()
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, $"LVL_{level}_{language}.json");
+
+        string filePath = Path.Combine(Application.streamingAssetsPath, $"dialogs/LVL_{level}_{language}.json");
 
         if (File.Exists(filePath))
         {
