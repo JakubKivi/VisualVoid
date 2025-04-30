@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class FinishPoint : MonoBehaviour
+public class EndPoint : MonoBehaviour
 {
     public System.Action OnPlayerReachedFinish;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

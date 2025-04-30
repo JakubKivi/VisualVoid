@@ -5,5 +5,5 @@ public class LevelData : ScriptableObject
 {
     public float playerSpeed;
     public float[] dialogPoints;
-
+    public string nextLVLName;
 }

@@ -1,0 +1,15 @@
+Pisaki:
+
+Taki co zostaje i się trzyma powietrza
+
+
+
+UI: 
+
+ - Jakiś poziom po lewo
+ - Ile którego pisaka zostało
+ - prosta lini na finish w jednym kolorze
+ - twoje śmierci w poprzednich grach w innym kolorze
+		--- dodatkowo:
+			kolor może zanikać
+			można zrobic specjalny kolor co nie zanika jednorazowo (potencjalna umiejętnośc)

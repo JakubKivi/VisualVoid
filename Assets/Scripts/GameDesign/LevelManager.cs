@@ -1,3 +1,4 @@
+using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,11 @@ public class LevelManager : MonoBehaviour
     public LevelData currentLevelData;
 
     private float playerSpeed;
+
+    public GameObject startPointGameObject;
+    public GameObject endPointGameObject;
+
+    private EndPoint endPoint;
 
     private void Awake()
     {
@@ -22,10 +28,16 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        endPoint = endPointGameObject.GetComponent<EndPoint>();
+        endPoint.OnPlayerReachedFinish += OnPlayerReachFinish;
         if (currentLevelData != null)
         {
             playerSpeed = currentLevelData.playerSpeed;
         }
+    }
+    private void OnPlayerReachFinish()
+    {
+        SceneManager.LoadScene(currentLevelData.nextLVLName);
     }
 
     public void CheckForDialogs(float playerPositionX)
