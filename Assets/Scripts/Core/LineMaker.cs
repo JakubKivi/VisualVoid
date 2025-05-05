@@ -9,7 +9,10 @@ public class LineMaker : MonoBehaviour
     public Transform endObject;
 
     public float delayWhenFinished = 1.0f;
-    public float drawDuration = 2f; 
+
+
+    public float drawDurationPerMeter = 2f; 
+
     private float elapsed = 0f;
 
     public ParticleSystem particles;
@@ -32,12 +35,14 @@ public class LineMaker : MonoBehaviour
 
     private IEnumerator CreateChaoticLine()
     {
-        Debug.Log("dupa");
-
         Vector3 startPosition = startObject.position;
         Vector3 endPosition = endObject.position;
+
+        float drawDuration = drawDurationPerMeter * Vector3.Distance(startPosition,endPosition);
+
         trailRenderer.emitting = false;
         transform.position = startPosition;
+        yield return new WaitForSeconds(0.05f);
         trailRenderer.emitting = true;
 
         while (elapsed < drawDuration)

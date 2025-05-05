@@ -1,19 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
-public class PlatformDrawer : MonoBehaviour
+public class PlatformDrawer_v2 : MonoBehaviour
 {
     [Header("Ustawienia")]
     public GameObject platformEntity;
-    public GameObject runner;
-    private LineRenderer lineRenderer;
-
     public bool isDrawingActive = false;
     public float minDistance = 0.3f;
     public int spawnDelayMs = 50;
     public int maxSegments = 200;
-    public float runnerClearRadius = 1f;
 
     private Vector3 lastSpawnPos;
     private Camera cam;
@@ -38,44 +33,34 @@ public class PlatformDrawer : MonoBehaviour
             float nowMs = Time.time * 1000f;
             if (nowMs - lastSpawnTime < spawnDelayMs) return;
 
+            // pobierz worldPos na płaszczyźnie z = 0
             Vector3 worldPos = GetMouseWorldPosition(0f);
 
-            if (Vector3.Distance(worldPos, runner.transform.position) > runnerClearRadius)
+            if (Vector3.Distance(lastSpawnPos, worldPos) >= minDistance)
             {
-                float distance = Vector3.Distance(lastSpawnPos, worldPos);
-
-                if (distance >= minDistance)
-                {
-                    if (distance >= 2 * minDistance)
-                    {
-                        Debug.Log("dupa");
-                    }
-                    //{
-                    //    for (int i = 1; i < distance/minDistance; i++)
-                    //    {
-                    //        Debug.Log("dupa");
-                    //        //SpawnCubeSegment(Vector3.Lerp(lastSpawnPos, worldPos, i/ (distance / minDistance)));
-                    //    }
-                    //}
-                    SpawnCubeSegment(worldPos);
-                    lastSpawnPos = worldPos;
-                    lastSpawnTime = nowMs;
-                }
-            }             
-                      
+                SpawnCubeSegment(worldPos);
+                lastSpawnPos = worldPos;
+                lastSpawnTime = nowMs;
+            }
         }
         else
         {
             lastSpawnPos = Vector3.positiveInfinity;
         }
     }
+    /// Zwraca pozycję myszy w world space na płaszczyźnie z = 0 (albo innej zadeklarowanej)
     Vector3 GetMouseWorldPosition(float planeZ = 0f)
     {
+        // 1. Pobierz pozycję w pikselach
         Vector3 mouseScreenPos = Input.mousePosition;
+        // 2. Ustaw odległość od kamery do płaszczyzny, na której rysujesz
+        //    jeśli kamera stoi na z = -15 i chcesz rysować na z = 0, to distance = 15
         float cameraZ = Camera.main.transform.position.z;
         float distance = Mathf.Abs(cameraZ - planeZ);
         mouseScreenPos.z = distance;
+        // 3. Rzutuj na world space
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        // 4. Wymus strefę Z (po prostu żeby mieć pewność)
         worldPos.z = planeZ;
         return worldPos;
     }
@@ -85,9 +70,18 @@ public class PlatformDrawer : MonoBehaviour
 {
     if (gameObject.scene.name == null || gameObject.scene.name == "") 
     {
+        // Obiekt nie należy do aktywnej sceny = został sklonowany z prefaba
         isClone = true;
     }
 }
+
+    Vector3 GetMouseWorldPosition()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = 10f;
+        return cam.ScreenToWorldPoint(mousePos);
+    }
+
     void SpawnCubeSegment(Vector3 pos)
     {
         GameObject segment = Instantiate(platformEntity, pos, Quaternion.identity);

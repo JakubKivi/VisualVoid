@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
 
     private float playerSpeed;
 
+    public GameObject playerPrefab;
+
     public GameObject startPointGameObject;
     public GameObject endPointGameObject;
 
@@ -34,6 +36,8 @@ public class LevelManager : MonoBehaviour
         {
             playerSpeed = currentLevelData.playerSpeed;
         }
+        GameObject player = Instantiate(playerPrefab, startPointGameObject.transform.position, Quaternion.identity);
+        Camera.main.GetComponent<FollowCamera>().SetTarget(player.transform);
     }
     private void OnPlayerReachFinish()
     {
